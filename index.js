@@ -4,11 +4,39 @@ const mysql = require("mysql");
 
 //connect sql/login
 const connection = require("./config/connection");
-
+//require init questions
+const initQuestions = require("./lib/menu");
 //function to start inquirer, initial prompts
-
+const initPrompt = () => {
+  inquirer.prompt(initQuestions).then(function (response) {
+    switch (response.answer) {
+      case "View all departments.":
+        viewDepartments();
+        break;
+      case "View all roles.":
+        viewRoles();
+        break;
+      case "View all employees.":
+        viewEmployees();
+        break;
+      case "Add a department.":
+        addDepartment();
+        break;
+      case "Add a role.":
+        addRole();
+        break;
+      case "Add an employee.":
+        addEmployee();
+        break;
+      case "Update an employee.":
+        appendEmployee();
+        break;
+    }
+  });
+};
 //view options
 //function view all departments
+
 //function shows formatted table showing department and dept name, dept ids
 
 //function view all roles
@@ -29,3 +57,6 @@ const connection = require("./config/connection");
 
 //function update an employee role
 // prompt to select employee to uppdate and their new role, this added to db
+
+// call prompt questions
+initPrompt();
