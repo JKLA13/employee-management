@@ -10,6 +10,7 @@ const dbConnect = mysql.createConnection(
     database: process.env.DB_NAME,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    port: 3306,
     // host: "localhost",
     // dialect: "mysql2",
     // port: 3306,

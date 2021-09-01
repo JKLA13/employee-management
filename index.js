@@ -51,19 +51,20 @@ const initPrompt = () => {
           viewEmployees();
           break;
         case "Add a department.":
-          addDepartment();
+          addDept();
           break;
         case "Add a role.":
           addRole();
           break;
         case "Add an employee.":
-          addEmployee();
+          addEmp();
           break;
         case "Update an employee.":
           appendEmployee();
           break;
         case "Exit app":
-          exitApp();
+          dbConnect.end();
+          console.log("Enjoy your day!");
           break;
       }
     });
