@@ -97,14 +97,15 @@ const viewAllEmployees = () => {
     initPrompt();
   });
 };
+//add/update section
 //function add a department
-// INPUT?? prompt enter name of the dept and dept is added to db
+// INPUT prompt enter name of the dept and dept is added to db
 const addDept = () => {
   inquirer
     .prompt({
       type: "input",
-      name: "departments",
-      message: "Please add department.",
+      name: "department",
+      message: "Please add a new department.",
     })
     .then(function (res) {
       dbConnect.query(
@@ -120,13 +121,86 @@ const addDept = () => {
       );
     });
 };
-//add/update section
+
 //function add a role
 // prompt enter name, salary, dept for the role, role is added to db
-
+const addRole = () => {
+  dbConnect.query("SELECT * FROM role;", function (err, res) {
+    inquirer
+      .prompt([
+        {
+          name: "title",
+          type: "input",
+          message: "Please add a new role.",
+        },
+        {
+          name: "salary",
+          type: "input",
+          message: "What is the salary for the new role?",
+        },
+      ])
+      .then(function (res) {
+        dbConnect.query(
+          "INSERT INTO role SET ?",
+          {
+            title: res.title,
+            salary: res.salary,
+          },
+          function (err) {
+            if (err) throw err;
+            console.table(res);
+            initPrompt();
+          }
+        );
+      });
+  });
+};
 //function add an employee
 // prompt enter first name, last name, role, and manager all added to db
-
+const addEmp = () => {
+  inquirer.prompt([
+    {
+      name: "firstname",
+      type: "input",
+      message: "Please enter first name: ",
+    }
+    {
+      name: "lastname",
+      type: "input",
+      message: "Please enter last name: ",
+    }
+    {
+      name: "manager",
+      type: "list",
+      message: "Please enter employees managers name.",
+      choices: chooseManager(),
+    }
+    {
+      name: "role",
+      type: "list",
+      message: "Please enter role for employee.",
+      choices: chooseRole(),
+    },
+  ])
+    .then(function (res) {
+      let idRole = chooseRole().indexOf(res.role) + 1;
+      let idManager = chooseManager().indexOf(res.manager) +1;
+      dbConnect.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: res.firstname,
+          last_name: res.lastname,
+          manager_id: idManager,
+          role_id: idRole,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(res);
+          initPrompt();
+        }
+      );
+    })
+}
 //function update an employee role
 // prompt to select employee to uppdate and their new role, this added to db
 
