@@ -17,7 +17,7 @@ const userWelcome = () => {
         message: appTitle,
       },
     ])
-    .then(initPrompt);
+    .then(initPrompt());
 };
 
 //function to start inquirer, initial prompts
@@ -72,7 +72,7 @@ const initPrompt = () => {
 
 //function view all departments
 //function shows formatted table showing department and dept name, dept ids
-const viewAllDepartments = () => {
+const viewDepartments = () => {
   dbConnect.query("SELECT * FROM department;", function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -82,7 +82,7 @@ const viewAllDepartments = () => {
 
 //function view all roles
 //function shows job title, role id, dept role belongs to, role salaray
-const viewAllRoles = () => {
+const viewRoles = () => {
   dbConnect.query("SELECT * FROM role;", function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -91,7 +91,7 @@ const viewAllRoles = () => {
 };
 //function view all employees
 //function shows formatted table of emploee data: employee ids, first names, last names, job titles, departments, salaries, manager of employee
-const viewAllEmployees = () => {
+const viewEmployees = () => {
   dbConnect.query("SELECT * FROM employee", function (err, res) {
     if (err) throw err;
     console.table(res);
@@ -231,5 +231,5 @@ const addEmp = () => {
 // prompt to select employee to uppdate and their new role, this added to db
 
 // call prompt questions
-const init = () => userWelcome();
-initPrompt();
+userWelcome();
+// initPrompt();
