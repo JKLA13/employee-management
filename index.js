@@ -158,33 +158,34 @@ const addRole = () => {
 //function add an employee
 // prompt enter first name, last name, role, and manager all added to db
 const addEmp = () => {
-  inquirer.prompt([
-    {
-      name: "firstname",
-      type: "input",
-      message: "Please enter first name: ",
-    }
-    {
-      name: "lastname",
-      type: "input",
-      message: "Please enter last name: ",
-    }
-    {
-      name: "manager",
-      type: "list",
-      message: "Please enter employees managers name.",
-      choices: chooseManager(),
-    }
-    {
-      name: "role",
-      type: "list",
-      message: "Please enter role for employee.",
-      choices: chooseRole(),
-    },
-  ])
+  inquirer
+    .prompt([
+      {
+        name: "firstname",
+        type: "input",
+        message: "Please enter first name: ",
+      },
+      {
+        name: "lastname",
+        type: "input",
+        message: "Please enter last name: ",
+      },
+      {
+        name: "manager",
+        type: "list",
+        message: "Please enter employees managers name.",
+        choices: chooseManager(),
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "Please enter role for employee.",
+        choices: chooseRole(),
+      },
+    ])
     .then(function (res) {
       let idRole = chooseRole().indexOf(res.role) + 1;
-      let idManager = chooseManager().indexOf(res.manager) +1;
+      let idManager = chooseManager().indexOf(res.manager) + 1;
       dbConnect.query(
         "INSERT INTO employee SET ?",
         {
@@ -199,8 +200,8 @@ const addEmp = () => {
           initPrompt();
         }
       );
-    })
-}
+    });
+};
 //function update an employee role
 // prompt to select employee to uppdate and their new role, this added to db
 
