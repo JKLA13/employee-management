@@ -73,7 +73,7 @@ const initPrompt = () => {
 //function view all departments
 //function shows formatted table showing department and dept name, dept ids
 const viewDepartments = () => {
-  dbConnect.query("SELECT * FROM department;", function (err, res) {
+  dbConnect.query("SELECT * FROM department", function (err, res) {
     if (err) throw err;
     console.table(res);
     initPrompt();
@@ -83,7 +83,7 @@ const viewDepartments = () => {
 //function view all roles
 //function shows job title, role id, dept role belongs to, role salaray
 const viewRoles = () => {
-  dbConnect.query("SELECT * FROM role;", function (err, res) {
+  dbConnect.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
     console.table(res);
     initPrompt();
