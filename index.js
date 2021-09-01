@@ -98,6 +98,29 @@ const viewAllEmployees = () => {
   });
 };
 //add/update section
+let mgrArr = [];
+const chooseManager = () => {
+  dbConnect.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL;",
+    function (err, res) {
+      if (err) throw err;
+      for (let i = 0; i < res.length; i++) {
+        mgrArr.push(res[i].first_name);
+      }
+    }
+  );
+  return mgrArr;
+};
+let roleArr = [];
+const chooseRole = () => {
+  dbConnect.query("SELECT * FROM role;", function (err, res) {
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      roleArr.push(res[i].title);
+    }
+  });
+  return roleArr;
+};
 //function add a department
 // INPUT prompt enter name of the dept and dept is added to db
 const addDept = () => {
@@ -155,6 +178,7 @@ const addRole = () => {
       });
   });
 };
+
 //function add an employee
 // prompt enter first name, last name, role, and manager all added to db
 const addEmp = () => {
