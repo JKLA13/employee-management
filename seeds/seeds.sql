@@ -1,3 +1,4 @@
+USE company_db;
 INSERT INTO department (id, name)
 VALUES
     (1, "Engineering"),
@@ -17,12 +18,12 @@ VALUES
     ("Lawyer", 190000, 3);
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-    ("John", "Doe", 1, NULL),
+    ("John", "Doe", 1, 1),
     ("Mike", "Chan", 2, 1),
-    ("Ashley", "Rodriguez", 3, NULL),
+    ("Ashley", "Rodriguez", 3, 5),
     ("Kevin", "Tupik", 4, 3),
-    ("Kunal", "Singh", 5, NULL),
-    ("Malia", "Brown", 6, 5),
-    ("Sarah", "Lourd", 7, NULL),
-    ("Tom", "Allen", 8, 7);
+    ("Kunal", "Singh", 4, 5),
+    ("Malia", "Brown", 3, 5),
+    ("Sarah", "Lourd", 2, 7),
+    ("Tom", "Allen", 1, 7);
 
