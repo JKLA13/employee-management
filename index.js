@@ -41,25 +41,25 @@ const initPrompt = () => {
     })
     .then(function (response) {
       switch (response.choice) {
-        case "View all departments.":
+        case "View all departments?":
           viewDepartments();
           break;
-        case "View all roles.":
+        case "View all roles?":
           viewRoles();
           break;
-        case "View all employees.":
+        case "View all employees?":
           viewEmployees();
           break;
-        case "Add a department.":
+        case "Add a department?":
           addDept();
           break;
-        case "Add a role.":
+        case "Add a role?":
           addRole();
           break;
-        case "Add an employee.":
+        case "Add an employee?":
           addEmp();
           break;
-        case "Update an employee.":
+        case "Update an employee?":
           appendEmployee();
           break;
         case "Exit app":
@@ -133,7 +133,7 @@ const addDept = () => {
     })
     .then(function (res) {
       dbConnect.query(
-        "INSERT INTO deparment SET ?",
+        "INSERT INTO department SET ?",
         {
           name: res.name,
         },
