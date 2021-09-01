@@ -1,40 +1,71 @@
-//require routes
+//require modules
+const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const mysql = require("mysql");
-
+const consTable = require("console.table");
 //connect sql/login
-const connection = require("./config/connection");
-//require init questions
-const initQuestions = require("./lib/menu");
-//function to start inquirer, initial prompts
-const initPrompt = () => {
-  inquirer.prompt(initQuestions).then(function (response) {
-    switch (response.answer) {
-      case "View all departments.":
-        viewDepartments();
-        break;
-      case "View all roles.":
-        viewRoles();
-        break;
-      case "View all employees.":
-        viewEmployees();
-        break;
-      case "Add a department.":
-        addDepartment();
-        break;
-      case "Add a role.":
-        addRole();
-        break;
-      case "Add an employee.":
-        addEmployee();
-        break;
-      case "Update an employee.":
-        appendEmployee();
-        break;
-    }
-  });
+const dbConnect = require("./config/connection");
+// const { dbConnect } = require(".config/connection");
+
+//display app name/welcome
+const userWelcome = () => {
+  const appTitle = `*** EMPLOYEE TRACKER APP ***`;
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "userWelcome",
+        message: appTitle,
+      },
+    ])
+    .then(initPrompt);
 };
+
+//function to start inquirer, initial prompts
 //view options
+const initPrompt = () => {
+  inquirer
+    .prompt({
+      name: "choice",
+      type: "list",
+      message: "Please make a choice.",
+      choices: [
+        "View all departments?",
+        "View all roles?",
+        "View all employees?",
+        "Add a department?",
+        "Add a role?",
+        "Add an employee?",
+        "Update an employee role?",
+        "Exit app",
+      ],
+    })
+    .then(function (answer) {
+      switch (response.answer) {
+        case "View all departments.":
+          viewDepartments();
+          break;
+        case "View all roles.":
+          viewRoles();
+          break;
+        case "View all employees.":
+          viewEmployees();
+          break;
+        case "Add a department.":
+          addDepartment();
+          break;
+        case "Add a role.":
+          addRole();
+          break;
+        case "Add an employee.":
+          addEmployee();
+          break;
+        case "Update an employee.":
+          appendEmployee();
+          break;
+      }
+    });
+};
+
 //function view all departments
 
 //function shows formatted table showing department and dept name, dept ids
@@ -59,4 +90,5 @@ const initPrompt = () => {
 // prompt to select employee to uppdate and their new role, this added to db
 
 // call prompt questions
+const init = () => userWelcome();
 initPrompt();
