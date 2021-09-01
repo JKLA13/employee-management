@@ -27,7 +27,7 @@ const initPrompt = () => {
     .prompt({
       name: "choice",
       type: "list",
-      message: "Please make a choice.",
+      message: "Please select what you'd like to do",
       choices: [
         "View all departments?",
         "View all roles?",
@@ -39,8 +39,8 @@ const initPrompt = () => {
         "Exit app",
       ],
     })
-    .then(function (answer) {
-      switch (response.answer) {
+    .then(function (response) {
+      switch (response.choice) {
         case "View all departments.":
           viewDepartments();
           break;
@@ -61,6 +61,9 @@ const initPrompt = () => {
           break;
         case "Update an employee.":
           appendEmployee();
+          break;
+        case "Exit app":
+          exitApp();
           break;
       }
     });
