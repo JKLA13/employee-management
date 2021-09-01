@@ -70,18 +70,56 @@ const initPrompt = () => {
 };
 
 //function view all departments
-
 //function shows formatted table showing department and dept name, dept ids
+const viewAllDepartments = () => {
+  dbConnect.query("SELECT * FROM department;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    initPrompt();
+  });
+};
 
 //function view all roles
 //function shows job title, role id, dept role belongs to, role salaray
-
+const viewAllRoles = () => {
+  dbConnect.query("SELECT * FROM role;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    initPrompt();
+  });
+};
 //function view all employees
 //function shows formatted table of emploee data: employee ids, first names, last names, job titles, departments, salaries, manager of employee
-
+const viewAllEmployees = () => {
+  dbConnect.query("SELECT * FROM employee", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    initPrompt();
+  });
+};
 //function add a department
 // INPUT?? prompt enter name of the dept and dept is added to db
-
+const addDept = () => {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "departments",
+      message: "Please add department.",
+    })
+    .then(function (res) {
+      dbConnect.query(
+        "INSERT INTO deparment SET ?",
+        {
+          name: res.name,
+        },
+        function (err, res) {
+          if (err) throw err;
+          console.table(res);
+          initPrompt();
+        }
+      );
+    });
+};
 //add/update section
 //function add a role
 // prompt enter name, salary, dept for the role, role is added to db
