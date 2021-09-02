@@ -245,49 +245,46 @@ const addEmp = () => {
 };
 
 //function update an employee role
+// prompt to select employee to uppdate and their new role, this added to db
 const appendEmployee = () => {
-  // prompt to select employee to uppdate and their new role, this added to db
-  dbConnect.query(
-    "SELECT employee.last_name, role.title FROM empployee JOIN role ON employee.role_id;",
-    function (err, res) {
-      inquirer
-        .prompt([
-          {
-            type: "input",
-            name: "employee",
-            message:
-              "Please select employee you'd like update with a new role: ",
-            choices: chooseEmp(),
-          },
-          {
-            type: "input",
-            name: "role",
-            message: "Please select a new role for your employee: ",
-            choices: roleArr(),
-          },
-        ])
-        .then(function (res) {
-          let empUpdate = chooseEmp().indexOf(res.employee) + 1;
-          let roleId = chooseRole().indexOf(res.role) + 1;
-          dbConnect.query(
-            "UPDATE employee SET ? WHERE ?",
-            [
-              {
-                last_name: empUpdate,
-              },
-              {
-                role_id: roleId,
-              },
-            ],
-            function (err) {
-              if (err) throw err;
-              console.table(res);
-              initPrompt();
-            }
-          );
-        });
-    }
-  );
+  dbConnect.query("SELECT * FROM employee ?", function (err, res) {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "employee",
+          message: "Please select employee you'd like update with a new role: ",
+          choices: chooseEmp(),
+        },
+        {
+          type: "input",
+          name: "role",
+          message: "Please select a new role for your employee: ",
+          choices: roleArr(),
+        },
+      ])
+      .then(function (res) {
+        let empUpdate = chooseEmp().indexOf(res.employee) + 1;
+        let roleId = chooseRole().indexOf(res.role) + 1;
+        dbConnect.query(
+          "UPDATE employee SET ? WHERE ?",
+          [
+            {
+              last_name: empUpdate,
+            },
+            {
+              role_id: roleId,
+            },
+          ],
+          function (err) {
+            if (err) throw err;
+            console.log("Employee's role has been updated");
+            // console.table(res);
+            initPrompt();
+          }
+        );
+      });
+  });
 };
 // call app welcome
 userWelcome();
