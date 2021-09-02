@@ -126,30 +126,38 @@ const chooseRole = () => {
 // INPUT prompt enter name of the dept and dept is added to db
 const addDept = () => {
   inquirer
-    .prompt({
-      type: "input",
-      name: "department",
-      message: "Please add a new department.",
-    })
-    .then(function (res) {
+    .prompt([
+      {
+        type: "input",
+        name: "department",
+        message: "Please add new department name: ",
+      },
+    ])
+    .then((res) => {
       dbConnect.query(
         "INSERT INTO department SET ?",
         {
-          name: res.name,
+          name: res.department,
         },
-        function (err, res) {
+        (err, res) => {
           if (err) throw err;
-          console.table(res);
+          console.log("New department added!");
           initPrompt();
         }
       );
+      // function (err, res) {
+      //   if (err) throw err;
+      //   // console.table(res);
+
+      // }
+      // );
     });
 };
 
 //function add a role
 // prompt enter name, salary, dept for the role, role is added to db
 const addRole = () => {
-  dbConnect.query("SELECT * FROM role;", function (err, res) {
+  dbConnect.query("SELECT * FROM role ?", function (err, res) {
     inquirer
       .prompt([
         {
@@ -172,7 +180,8 @@ const addRole = () => {
           },
           function (err) {
             if (err) throw err;
-            console.table(res);
+            console.log("Role added!");
+            // console.table(res);
             initPrompt();
           }
         );
@@ -198,13 +207,13 @@ const addEmp = () => {
       {
         name: "manager",
         type: "list",
-        message: "Please enter employees managers name.",
+        message: "Please enter employees managers name: ",
         choices: chooseManager(),
       },
       {
         name: "role",
         type: "list",
-        message: "Please enter role for employee.",
+        message: "Please enter role for employee: ",
         choices: chooseRole(),
       },
     ])
