@@ -1,10 +1,9 @@
-//require modules
+//require dependecies
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
 const consTable = require("console.table");
-//connect sql/login
+//require connect sql/login
 const dbConnect = require("./config/connection");
-// const { dbConnect } = require(".config/connection");
 
 //display app name/welcome
 const userWelcome = () => {
@@ -21,7 +20,6 @@ const userWelcome = () => {
 };
 
 //function to start inquirer, initial prompts
-//view options
 const initPrompt = () => {
   inquirer
     .prompt({
@@ -71,7 +69,6 @@ const initPrompt = () => {
 };
 
 //function view all departments
-//function shows formatted table showing department and dept name, dept ids
 const viewDepartments = () => {
   dbConnect.query("SELECT * FROM department", function (err, res) {
     if (err) throw err;
@@ -81,7 +78,6 @@ const viewDepartments = () => {
 };
 
 //function view all roles
-//function shows job title, role id, dept role belongs to, role salaray
 const viewRoles = () => {
   dbConnect.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
@@ -90,7 +86,6 @@ const viewRoles = () => {
   });
 };
 //function view all employees
-//function shows formatted table of emploee data: employee ids, first names, last names, job titles, departments, salaries, manager of employee
 const viewEmployees = () => {
   dbConnect.query("SELECT * FROM employee", function (err, res) {
     if (err) throw err;
@@ -98,7 +93,18 @@ const viewEmployees = () => {
     initPrompt();
   });
 };
-//add/update section
+//arrays to utilize
+let empArr = [];
+const chooseEmp = () => {
+  dbConnect.query("SELECT * FROM employee", function (err, res) {
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      empArr.push(res[i].last_name);
+    }
+  });
+  return empArr;
+};
+
 let mgrArr = [];
 const chooseManager = () => {
   dbConnect.query(
@@ -106,12 +112,13 @@ const chooseManager = () => {
     function (err, res) {
       if (err) throw err;
       for (let i = 0; i < res.length; i++) {
-        mgrArr.push(res[i].first_name);
+        mgrArr.push(res[i].last_name);
       }
     }
   );
   return mgrArr;
 };
+
 let roleArr = [];
 const chooseRole = () => {
   dbConnect.query("SELECT * FROM role;", function (err, res) {
@@ -236,9 +243,51 @@ const addEmp = () => {
       );
     });
 };
-//function update an employee role
-// prompt to select employee to uppdate and their new role, this added to db
 
-// call prompt questions
+//function update an employee role
+const appendEmployee = () => {
+  // prompt to select employee to uppdate and their new role, this added to db
+  dbConnect.query(
+    "SELECT employee.last_name, role.title FROM empployee JOIN role ON employee.role_id;",
+    function (err, res) {
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "employee",
+            message:
+              "Please select employee you'd like update with a new role: ",
+            choices: chooseEmp(),
+          },
+          {
+            type: "input",
+            name: "role",
+            message: "Please select a new role for your employee: ",
+            choices: roleArr(),
+          },
+        ])
+        .then(function (res) {
+          let empUpdate = chooseEmp().indexOf(res.employee) + 1;
+          let roleId = chooseRole().indexOf(res.role) + 1;
+          dbConnect.query(
+            "UPDATE employee SET ? WHERE ?",
+            [
+              {
+                last_name: empUpdate,
+              },
+              {
+                role_id: roleId,
+              },
+            ],
+            function (err) {
+              if (err) throw err;
+              console.table(res);
+              initPrompt();
+            }
+          );
+        });
+    }
+  );
+};
+// call app welcome
 userWelcome();
-// initPrompt();
