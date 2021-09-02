@@ -7,16 +7,11 @@ const dbConnect = require("./config/connection");
 
 //display app name/welcome
 const userWelcome = () => {
-  const appTitle = `*** EMPLOYEE TRACKER APP ***`;
-  return inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "userWelcome",
-        message: appTitle,
-      },
-    ])
-    .then(initPrompt());
+  const appTitle = `\n*** EMPLOYEE TRACKER APP ***\n`;
+
+  console.log(appTitle);
+
+  initPrompt();
 };
 
 //function to start inquirer, initial prompts
