@@ -52,7 +52,7 @@ const initPrompt = () => {
         case "Add an employee?":
           addEmp();
           break;
-        case "Update an employee?":
+        case "Update an employee role?":
           appendEmployee();
           break;
         case "Exit app":
@@ -147,12 +147,6 @@ const addDept = () => {
           initPrompt();
         }
       );
-      // function (err, res) {
-      //   if (err) throw err;
-      //   // console.table(res);
-
-      // }
-      // );
     });
 };
 
@@ -183,7 +177,6 @@ const addRole = () => {
           function (err) {
             if (err) throw err;
             console.log("Role added!");
-            // console.table(res);
             initPrompt();
           }
         );
@@ -242,43 +235,52 @@ const addEmp = () => {
 //function update an employee role
 // prompt to select employee to uppdate and their new role, this added to db
 const appendEmployee = () => {
-  dbConnect.query("SELECT * FROM employee ?", function (err, res) {
-    inquirer
-      .prompt([
-        {
-          type: "input",
-          name: "employee",
-          message: "Please select employee you'd like update with a new role: ",
-          choices: chooseEmp(),
-        },
-        {
-          type: "input",
-          name: "role",
-          message: "Please select a new role for your employee: ",
-          choices: roleArr(),
-        },
-      ])
-      .then(function (res) {
-        let empUpdate = chooseEmp().indexOf(res.employee) + 1;
-        let roleId = chooseRole().indexOf(res.role) + 1;
-        dbConnect.query(
-          "UPDATE employee SET ? WHERE ?",
-          [
-            {
-              last_name: empUpdate,
-            },
-            {
-              role_id: roleId,
-            },
-          ],
-          function (err) {
-            if (err) throw err;
-            console.log("Employee's role has been updated");
-            // console.table(res);
-            initPrompt();
-          }
-        );
-      });
+  dbConnect.query("SELECT * FROM employee", function (err, res) {
+    for (let i = 0; i < res.length; i++) {
+      empArr.push(res[i].last_name);
+    }
+    dbConnect.query("SELECT * FROM role", function (err, res) {
+      for (let i = 0; i < res.length; i++) {
+        roleArr.push(res[i].title);
+      }
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employee",
+            message:
+              "Please select employee you'd like update with a new role: ",
+            choices: empArr,
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "Please select a new role for your employee: ",
+            choices: roleArr,
+          },
+        ])
+        .then(function (res) {
+          let empUpdate = empArr.indexOf(res.employee) + 1;
+          let roleId = roleArr.indexOf(res.role) + 1;
+          dbConnect.query(
+            "UPDATE employee SET ? WHERE ?",
+            [
+              {
+                last_name: empUpdate,
+              },
+              {
+                role_id: roleId,
+              },
+            ],
+            function (err) {
+              if (err) throw err;
+              console.log("Employee's role has been updated");
+              // console.table(res);
+              initPrompt();
+            }
+          );
+        });
+    });
   });
 };
 // call app welcome
