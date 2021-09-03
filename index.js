@@ -99,7 +99,7 @@ const chooseEmp = () => {
   });
   return empArr;
 };
-
+// build arrays
 let mgrArr = [];
 const chooseManager = () => {
   dbConnect.query(
@@ -225,7 +225,7 @@ const addEmp = () => {
         },
         function (err) {
           if (err) throw err;
-          console.table(res);
+          console.log("Employee has been added!");
           initPrompt();
         }
       );
