@@ -1,4 +1,4 @@
-# Note taker App
+# Employee Management App
 
 ## Description
 
